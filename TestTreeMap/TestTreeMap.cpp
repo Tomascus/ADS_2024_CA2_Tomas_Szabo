@@ -8,7 +8,7 @@ namespace TreeMapTests
 	TEST_CLASS(TreeMapTests)
 	{
 	public:
-		
+
 		// For now, the tests and treemap contains car names and first letters as key,value for the map - will change for part 2 maybe, also changing it to read from file
 		// This test checks if the TreeMap is empty after clearing it 
 		TEST_METHOD(TestClear)
@@ -35,8 +35,8 @@ namespace TreeMapTests
 		}
 
 		// This test checks if the TreeMap returns the correct value (string car name) for the key 
-        TEST_METHOD(TestGet)
-        {
+		TEST_METHOD(TestGet)
+		{
 			TreeMap<string, char> map;
 			map.put("Audi", 'A');
 			map.put("Bentley", 'B');
@@ -46,7 +46,7 @@ namespace TreeMapTests
 
 			// If the key does not exist, it returns a default value (empty char) - Change ?
 			Assert::AreEqual('\0', map.get("Chevrolet"));
-        }
+		}
 
 		// This test checks if the TreeMap returns correct key based on array of keys, checks if the array size is correct and if the keys are in the correct order
 		TEST_METHOD(TestKeySet)
@@ -59,7 +59,7 @@ namespace TreeMapTests
 			BinaryTree<string> keys = map.keySet();
 			string* keyArray = keys.toArray();
 
-			Assert::AreEqual(3, keys.count()); 
+			Assert::AreEqual(3, keys.count());
 			Assert::AreEqual(string("Audi"), keyArray[0]);
 			Assert::AreEqual(string("Bentley"), keyArray[1]);
 			Assert::AreEqual(string("Chevrolet"), keyArray[2]);
@@ -111,8 +111,8 @@ namespace TreeMapTests
 			map.put("Bentley", 'B');
 			map.put("Chevrolet", 'C');
 
-			Assert::IsTrue(map.removeKey("Audi")); 
-			Assert::AreEqual(2, map.size()); 
+			Assert::IsTrue(map.removeKey("Audi"));
+			Assert::AreEqual(2, map.size());
 			Assert::IsFalse(map.containsKey("Audi")); // The key should not exist 
 
 			Assert::IsFalse(map.removeKey("Skoda")); // Remove key that doesnt exist
