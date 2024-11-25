@@ -6,20 +6,20 @@
 
 template <class K, class V>
 class TreeMap {
-	BinaryTree<pair<K, V>> treeMap; // Im using a binary tree to store key value pairs for the map
+	BinaryTree<pair<K, V>> map; // Im using a binary tree to store key value pairs for the map
 
 	//Implement find node here for get, remove and other methods!!! - instead of calling it in every method
 
 public:
     void put(K key, V value) 
     {
-		data[key] = value; // Adds key value pair to map
+		
     }
 
 	// Clears the map 
     void clear() 
     {
-        tree.clear();
+        map.clear();
     }
 
     bool containsKey(K key) 
@@ -40,7 +40,7 @@ public:
 	// Returns size of map
     int size() 
     {
-        return tree.count();
+        return map.count();
     }
 
     bool removeKey(K key) 
