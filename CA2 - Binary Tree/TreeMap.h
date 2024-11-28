@@ -1,6 +1,7 @@
 #include <map>
 #include <utility> 
 #include "BinaryTree.h"
+#include "MapValues.h"
 
 using namespace std;
 
@@ -8,19 +9,19 @@ using namespace std;
 
 template <class K, class V>
 class TreeMap {
-	BinaryTree<pair<K, V>> map; // Im using a binary tree to store key value pairs for the map
+    BinaryTree<MapValues<K, V>> map; // Im using a binary tree to store key value pairs from struct for the map
 
 	// This method finds a node in the map - used in get, remove and other methods to find the node instead of calling it in every method
-    BSTNode<pair<K, V>>* find(K key) {
-		BSTNode<pair<K, V>>* current = map.root; // Start from the root of the map
+    BSTNode<MapValues<K, V>>* find(K key) {
+		BSTNode<MapValues<K, V>>* current = map.root; // Start from the root of the map
         
 		// This part loops through the map to find the key, if the key is equal to the current key, return it,
 		// otherwise we go left if the key is smaller than the current key, or right if the key is bigger than current key
         while (current != nullptr) {
-            if (current->getItem().first == key) {
+            if (current->getItem().key == key) {
                 return current;
             }
-            else if (current->getItem().first > key) {
+            else if (current->getItem().key > key) {
                 current = current->getLeft();
             }
             else {
@@ -73,12 +74,12 @@ BinaryTree<K> TreeMap<K, V>::keySet()
 template <class K, class V>
 void TreeMap<K, V>::put(K key, V value) 
 {
-    BSTNode<pair<K, V>>* node = find(key);  // Find the node based on the key inputted
+    BSTNode<MapValues<K, V>>* node = find(key);  // Find the node based on the key inputted
     if (node != nullptr) {
-		node->setItem(make_pair(key, value)); // Here I replace the items in the node with the new pair, MIGHT CHANGE ???
+        node->setItem(MapValues<K, V>(key, value)); // Here I replace the items in the node with the new map pair
     }
     else {
-		map.add(make_pair(key, value)); // If the key doesnt exist, add it to the map
+        map.add(MapValues<K, V>(key, value)); // If the key doesnt exist, add it to the map
     }
 }
 
@@ -93,11 +94,11 @@ int TreeMap<K, V>::size()
 template <class K, class V>
 bool TreeMap<K, V>::removeKey(K key) 
 {
-    BSTNode<pair<K, V>>* node = find(key); // same as before, instead of doing it separately for each method...
+    BSTNode<MapValues<K, V>>* node = find(key); // same as before, instead of doing it separately for each method...
     if (node == nullptr) {
         return false; // returns false if the node wasnt found
     }
-    pair<K, V> item = node->getItem();
+    MapValues<K, V> item = node->getItem();
 	return map.remove(item); // Get the item from the node and remove it from the map
 }
 
@@ -105,5 +106,5 @@ bool TreeMap<K, V>::removeKey(K key)
 template <class K, class V>
 V& TreeMap<K, V>::operator[](K key) 
 {
-    return V();
+    //return V();
 }
