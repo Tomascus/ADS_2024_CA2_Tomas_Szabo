@@ -60,14 +60,20 @@ bool TreeMap<K, V>::containsKey(K key)
 template <class K, class V>
 V& TreeMap<K, V>::get(K key)
 {
-    //return V();
+	// Start by finding the node with the key and return the value of the node if present in map, otherwise return a default value
+    BSTNode<MapValues<K, V>>* node = find(key);
+    if (node == nullptr) {
+		V defaultValue = V(); // Instead of using error when nullptr, I return a default value (null) which makes it cleaner and esier to orient 
+        return defaultValue;
+    }
+    return node->getItem().value;
 }
 
 // This returns a binary tree of keys in the map
 template <class K, class V>
 BinaryTree<K> TreeMap<K, V>::keySet()
 {
-    return BinaryTree<K>();
+    // FINISH THIS LATER
 }
 
 // This method adds a new pair to the map
@@ -106,5 +112,11 @@ bool TreeMap<K, V>::removeKey(K key)
 template <class K, class V>
 V& TreeMap<K, V>::operator[](K key) 
 {
-    //return V();
+	// Same as get method, but instead of returning a default value, I add a new pair with default value if not found
+    BSTNode<MapValues<K, V>>* node = find(key);
+    if (node == nullptr) {
+        put(key, V());
+		node = find(key); // Find it again and return the value
+    }
+    return node->getItem().value;
 }

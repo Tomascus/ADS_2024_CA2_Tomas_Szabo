@@ -13,56 +13,59 @@ namespace TreeMapTests
 		// This test checks if the TreeMap is empty after clearing it 
 		TEST_METHOD(TestClear)
 		{
-			TreeMap<string, char> map;
-			map.put("Audi", 'A');
-			map.put("Bentley", 'B');
+			TreeMap<char, string> map;
+			map.put('A', "Audi");
+			map.put('B', "Bentley");
 
 			map.clear();
 			Assert::AreEqual(0, map.size()); // Size should be 0 
-			Assert::IsFalse(map.containsKey("Audi")); // All keys previously added should not exist
-			Assert::IsFalse(map.containsKey("Bentley"));
+			Assert::IsFalse(map.containsKey('A')); // All keys previously added should not exist
+			Assert::IsFalse(map.containsKey('B'));
 		}
 
 		// This test checks if the TreeMap has the keys that were added, also checks for keys not added
 		TEST_METHOD(TestContainsKey)
 		{
-			TreeMap<string, char> map;
-			map.put("Audi", 'A');
-			map.put("Bentley", 'B');
+			TreeMap<char, string> map;
+			map.put('A', "Audi");
+			map.put('B', "Bentley");
 
-			Assert::IsTrue(map.containsKey("Audi")); // Key in the map exists
-			Assert::IsFalse(map.containsKey("Chevrolet")); // Key in the map doesnt exist
+			Assert::IsTrue(map.containsKey('A')); // Key in the map exists
+			Assert::IsFalse(map.containsKey('C')); // Key in the map doesnt exist
 		}
 
 		// This test checks if the TreeMap returns the correct value (string car name) for the key 
 		TEST_METHOD(TestGet)
 		{
-			TreeMap<string, char> map;
-			map.put("Audi", 'A');
-			map.put("Bentley", 'B');
+			TreeMap<char, string> map;
 
-			Assert::AreEqual('A', map.get("Audi"));
-			Assert::AreEqual('B', map.get("Bentley"));
+			Assert::AreEqual(string(""), map.get('A')); // This tests an edge case where the key is not in the map at the start
 
-			// If the key does not exist, it returns a default value (empty char) - Change ?
-			Assert::AreEqual('\0', map.get("Chevrolet"));
+			map.put('A', "Audi");
+			map.put('B', "Bentley");
+
+			Assert::AreEqual(string("Audi"), map.get('A'));
+			Assert::AreEqual(string("Bentley"), map.get('B'));
+
+			// If the key does not exist, it returns a default value (empty string) - Change ?
+			Assert::AreEqual(string(""), map.get('C'));
 		}
 
 		// This test checks if the TreeMap returns correct key based on array of keys, checks if the array size is correct and if the keys are in the correct order
 		TEST_METHOD(TestKeySet)
 		{
-			TreeMap<string, char> map;
-			map.put("Audi", 'A');
-			map.put("Bentley", 'B');
-			map.put("Chevrolet", 'C');
+			TreeMap<char, string> map;
+			map.put('A', "Audi");
+			map.put('B', "Bentley");
+			map.put('C', "Chevrolet");
 
-			BinaryTree<string> keys = map.keySet();
-			string* keyArray = keys.toArray();
+			BinaryTree<char> keys = map.keySet();
+			char* keyArray = keys.toArray();
 
 			Assert::AreEqual(3, keys.count());
-			Assert::AreEqual(string("Audi"), keyArray[0]);
-			Assert::AreEqual(string("Bentley"), keyArray[1]);
-			Assert::AreEqual(string("Chevrolet"), keyArray[2]);
+			Assert::AreEqual('A', keyArray[0]);
+			Assert::AreEqual('B', keyArray[1]);
+			Assert::AreEqual('C', keyArray[2]);
 
 			delete[] keyArray; // Free the memory for the array
 		}
@@ -70,67 +73,70 @@ namespace TreeMapTests
 		// This test checks if the TreeMap can add, update and get values correctly
 		TEST_METHOD(TestPut)
 		{
-			TreeMap<string, char> map;
-			map.put("Audi", 'A');
-			map.put("Bentley", 'B');
+			TreeMap<char, string> map;
+			map.put('A', "Audi");
+			map.put('B', "Bentley");
 
-			Assert::AreEqual('A', map.get("Audi"));
-			Assert::AreEqual('B', map.get("Bentley"));
+			Assert::AreEqual(string("Audi"), map.get('A'));
+			Assert::AreEqual(string("Bentley"), map.get('B'));
 
 			// Update existing key to a different one
-			map.put("Audi", 'D');
+			map.put('A', "Dodge");
 
 			// Check if the value was updated
-			Assert::AreEqual('D', map.get("Audi"));
+			Assert::AreEqual(string("Dodge"), map.get('A'));
 		}
 
 		// This test checks if the TreeMap returns the correct size after adding, updating and removing keys
 		TEST_METHOD(TestSize)
 		{
-			TreeMap<string, char> map;
+			TreeMap<char, string> map;
 			Assert::AreEqual(0, map.size()); // Checks if starting size is 0
 
-			map.put("Audi", 'A');
-			map.put("Bentley", 'B');
+			map.put('A', "Audi");
+			map.put('B', "Bentley");
 
 			Assert::AreEqual(2, map.size()); // Checks if size is correct after adding keys
 
 			// Update existing key to a different one and check if the size is the same
-			map.put("Audi", 'D');
+			map.put('A', "Dodge");
 			Assert::AreEqual(2, map.size());
 
-			map.removeKey("Bentley");
+			map.removeKey('B');
 			Assert::AreEqual(1, map.size()); // Checks if size is correct after removing a key
 		}
 
 		// This test checks if the TreeMap can remove keys correctly
 		TEST_METHOD(TestRemoveKey)
 		{
-			TreeMap<string, char> map;
-			map.put("Audi", 'A');
-			map.put("Bentley", 'B');
-			map.put("Chevrolet", 'C');
+			TreeMap<char, string> map;
+			map.put('A', "Audi");
+			map.put('B', "Bentley");
+			map.put('C', "Chevrolet");
 
-			Assert::IsTrue(map.removeKey("Audi"));
+			Assert::IsTrue(map.removeKey('A'));
 			Assert::AreEqual(2, map.size());
-			Assert::IsFalse(map.containsKey("Audi")); // The key should not exist 
+			Assert::IsFalse(map.containsKey('A')); // The key should not exist 
 
-			Assert::IsFalse(map.removeKey("Skoda")); // Remove key that doesnt exist
+			Assert::IsFalse(map.removeKey('D')); // Remove key that doesnt exist
 			Assert::AreEqual(2, map.size()); // Size should be the same
 		}
 
 		// This test checks if the TreeMap can return the correct value for a key using the "[]" operator or null if the key doesnt exist
 		TEST_METHOD(TestOperator)
 		{
-			TreeMap<string, char> map;
-			map.put("Audi", 'A');
-			map.put("Bentley", 'B');
+			TreeMap<char, string> map;
 
-			Assert::AreEqual('A', map["Audi"]); // Checks if the value is correct
-			Assert::AreEqual('B', map["Bentley"]);
+			Assert::AreEqual(string(""), map['C']); // Tests an edge case at the start where the key is not there
 
-			// If the key doesnt exist, it returns a default value (empty char) - Change ?
-			Assert::AreEqual('\0', map["Chevrolet"]);
+			map.put('A', "Audi");
+			map.put('B', "Bentley");
+
+			Assert::AreEqual(string("Audi"), map['A']); // Checks if the value is correct
+			Assert::AreEqual(string("Bentley"), map['B']);
+
+			// If the key doesnt exist, it returns a default value (empty string) - Change ?
+			Assert::AreEqual(string(""), map['C']);
 		}
 
 	};
