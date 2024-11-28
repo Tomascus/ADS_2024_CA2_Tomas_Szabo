@@ -10,7 +10,26 @@ template <class K, class V>
 class TreeMap {
 	BinaryTree<pair<K, V>> map; // Im using a binary tree to store key value pairs for the map
 
-	//Implement find node here for get, remove and other methods!!! - instead of calling it in every method 
+	// This method finds a node in the map - used in get, remove and other methods to find the node instead of calling it in every method
+    BSTNode<pair<K, V>>* find(K key) {
+		BSTNode<pair<K, V>>* current = map.root; // Start from the root of the map
+        
+		// This part loops through the map to find the key, if the key is equal to the current key, return it,
+		// otherwise we go left if the key is smaller than the current key, or right if the key is bigger than current key
+        while (current != nullptr) {
+            if (current->getItem().first == key) {
+                return current;
+            }
+            else if (current->getItem().first > key) {
+                current = current->getLeft();
+            }
+            else {
+                current = current->getRight();
+            }
+        }
+		return nullptr; // If key was not found return null
+    }
+
 public:
     void clear();
     bool containsKey(K key);
@@ -33,7 +52,7 @@ void TreeMap<K, V>::clear()
 template <class K, class V>
 bool TreeMap<K, V>::containsKey(K key) 
 {
-    return false;
+    return find(key) != nullptr; // Just calling the find method and checking if the key exists and is not null
 }
 
 // This method returns the value of the key in the map
@@ -54,7 +73,13 @@ BinaryTree<K> TreeMap<K, V>::keySet()
 template <class K, class V>
 void TreeMap<K, V>::put(K key, V value) 
 {
-    // CODE HERE LATER
+    BSTNode<pair<K, V>>* node = find(key);  // Find the node based on the key inputted
+    if (node != nullptr) {
+		node->setItem(make_pair(key, value)); // Here I replace the items in the node with the new pair, MIGHT CHANGE ???
+    }
+    else {
+		map.add(make_pair(key, value)); // If the key doesnt exist, add it to the map
+    }
 }
 
 // This method returns the number of pairs in the map
@@ -68,7 +93,12 @@ int TreeMap<K, V>::size()
 template <class K, class V>
 bool TreeMap<K, V>::removeKey(K key) 
 {
-    return false;
+    BSTNode<pair<K, V>>* node = find(key); // same as before, instead of doing it separately for each method...
+    if (node == nullptr) {
+        return false; // returns false if the node wasnt found
+    }
+    pair<K, V> item = node->getItem();
+	return map.remove(item); // Get the item from the node and remove it from the map
 }
 
 // This method returns the value of the key in the map - overloaded operator
