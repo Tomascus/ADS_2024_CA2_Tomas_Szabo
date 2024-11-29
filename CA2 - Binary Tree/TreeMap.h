@@ -34,13 +34,16 @@ class TreeMap {
 public:
     void clear();
     bool containsKey(K key);
-    V& get(K key);
+    V get(K key);
 	BinaryTree<K> keySet();
     void put(K key, V value);
     int size();
     bool removeKey(K key);
     V& operator[](K key);
+	void printMap();
+	void printMapHelper(BSTNode<MapValues<K, V>>* node);
 };
+
 
 // Uses clear method from binary tree to clear the map
 template <class K, class V>
@@ -58,22 +61,33 @@ bool TreeMap<K, V>::containsKey(K key)
 
 // This method returns the value of the key in the map
 template <class K, class V>
-V& TreeMap<K, V>::get(K key)
+V TreeMap<K, V>::get(K key)
 {
 	// Start by finding the node with the key and return the value of the node if present in map, otherwise return a default value
     BSTNode<MapValues<K, V>>* node = find(key);
     if (node == nullptr) {
-		V defaultValue = V(); // Instead of using error when nullptr, I return a default value (null) which makes it cleaner and esier to orient 
-        return defaultValue;
+		 // Instead of using error when nullptr, I return a default value (null) which makes it cleaner and esier to orient 
+        return V();
     }
     return node->getItem().value;
 }
 
-// This returns a binary tree of keys in the map
 template <class K, class V>
-BinaryTree<K> TreeMap<K, V>::keySet()
-{
-    // FINISH THIS LATER
+BinaryTree<K> TreeMap<K, V>::keySet() {
+	
+    BinaryTree<K> keySetTree; // I create a temporary binary tree to store the keys
+
+	// Gets all the keys sorted by using array of each node in the map
+    int nodeCount = map.count(); 
+    MapValues<K, V>* nodeArray = map.toArray();
+
+	// Goes through each node and adds the key to the keysTree
+    for (int i = 0; i < nodeCount; ++i) {
+        keySetTree.add(nodeArray[i].key);
+    }
+
+    delete[] nodeArray; // Free the memory
+    return keySetTree;
 }
 
 // This method adds a new pair to the map
@@ -85,7 +99,8 @@ void TreeMap<K, V>::put(K key, V value)
         node->setItem(MapValues<K, V>(key, value)); // Here I replace the items in the node with the new map pair
     }
     else {
-        map.add(MapValues<K, V>(key, value)); // If the key doesnt exist, add it to the map
+        MapValues<K, V> newItem(key, value); // If the key doesnt exist, add it to the map
+        map.add(newItem);
     }
 }
 

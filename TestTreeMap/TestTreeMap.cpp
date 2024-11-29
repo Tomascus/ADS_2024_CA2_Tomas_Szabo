@@ -62,6 +62,7 @@ namespace TreeMapTests
 			BinaryTree<char> keys = map.keySet();
 			char* keyArray = keys.toArray();
 
+			keys.printInOrder();
 			Assert::AreEqual(3, keys.count());
 			Assert::AreEqual('A', keyArray[0]);
 			Assert::AreEqual('B', keyArray[1]);
