@@ -131,6 +131,7 @@
     <ClInclude Include="BSTNode.h" />
     <ClInclude Include="MapValues.h" />
     <ClInclude Include="TreeMap.h" />
+    <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TreeMapMain.cpp" />

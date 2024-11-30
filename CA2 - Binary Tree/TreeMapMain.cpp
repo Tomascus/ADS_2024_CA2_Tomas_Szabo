@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include "TreeMap.h"
+#include "Weapon.h"
 
 using namespace std;
 
@@ -35,7 +36,21 @@ void readFile(const string& filename, TreeMap<char, BinaryTree<string>>& map) {
 }
 
 int main() {
-    TreeMap<char, BinaryTree<string>> map;
+    
+    string filename = "weapons.csv"; 
+	vector<Weapon> items = readCSV(filename); // call the method that reads the file
+
+
+	// Displays the data read from the file by irerating through the array of weapons
+    for (const auto& item : items) {
+        cout << "Name: " << item.name << ", Type: " << item.type << 
+            ", Damage: " << item.damage << ", Cost: " << item.cost
+            << ", Rarity: " << item.rarity << endl;
+    }
+
+    
+    
+    /*TreeMap<char, BinaryTree<string>> map;
     string filename = "words.txt";
 
     readFile(filename, map);
@@ -59,6 +74,7 @@ int main() {
     else {
         cout << "There are no words starting with: '" << letter << "'" << endl;
     }
+    */
 
     return 0;
 }
