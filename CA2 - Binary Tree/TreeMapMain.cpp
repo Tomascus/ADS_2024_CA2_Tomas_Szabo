@@ -1,62 +1,64 @@
 #include <iostream>
-#include <string>
+#include <fstream>
 #include "TreeMap.h"
 
 using namespace std;
 
+// This method reads the file and and inserts the words into the map - For now Im creating the map by storing character and a binary tree of strings (CHANGE ?)
+void readFile(const string& filename, TreeMap<char, BinaryTree<string>>& map) {
+    ifstream file(filename);
+    if (!file) {
+        cout << "Error opening the file called: " << filename << endl;
+        return;
+    }
+
+	// Reads the file word by word
+    string word;
+    while (file >> word) {
+        
+		// Here I convert each word to lowercase to make it easier to compare
+        for (char& c : word) {
+            c = tolower(c);
+        }
+
+		// Get the first letter to store as the key
+        char firstLetter = word[0];
+
+		// Inserts the word into the map if the key is not there yet
+        if (!map.containsKey(firstLetter)) {
+            map.put(firstLetter, BinaryTree<string>());
+        }
+        map[firstLetter].add(word); // Using BinaryTree's add method to insert word
+    }
+
+    file.close();
+}
+
 int main() {
-    
-    TreeMap<char, string> map;
+    TreeMap<char, BinaryTree<string>> map;
+    string filename = "words.txt";
 
-    // Add cars and their first letters to the map
-    map.put('A', "Audi");
-    map.put('B', "BMW");
-    map.put('C', "Chevrolet");
-    map.put('F', "Ford");
+    readFile(filename, map);
 
-	// Display the size of the map
-    cout << "Size of map: " << map.size() << endl;
-
-    // Check if specific letter is in the map
-    if (map.containsKey('A')) {
-        cout << "It contains key 'A'" << endl;
-    } else {
-        cout << "Does not contain key 'A'" << endl;
-    }
-
-    if (map.containsKey('T')) {
-        cout << "It contains key 'T'" << endl;
-    } else {
-        cout << "Does not contain key 'T'" << endl;
-    }
-
-	// Get values using get() and operator[] - operator will add a new key if it doesnt exist
-    cout << "Value for 'B': " << map.get('B') << endl;
-    cout << "Value for 'F' with operator[]: " << map['F'] << endl;
-
-	// Try to get a value for a key that doesnt exist - should return an empty string 
-    cout << "Value for 'T' with get method: " << map.get('T') << endl;
-    cout << "Value for 'T' with operator[]: " << map['T'] << endl;  
-
-	// Check the size of the map after using operator[] on a key that doesnt exist
-    cout << "Size of map after operator[] method: " << map.size() << endl;
-
-    // Remove a key from the map
-    if (map.removeKey('C')) {
-        cout << "Removed key 'C'" << endl;
-    } else {
-        cout << "Did not remove key 'C'" << endl;
-    }
-    cout << "Size of map after removing: " << map.size() << endl;
-
-	// Get the key set and print it
+	// Display the list of letters in the file
+    cout << "Letters in the file: ";
     BinaryTree<char> keys = map.keySet();
-    cout << "Keys in the map: ";
-    keys.printInOrder(); 
+    keys.printInOrder();
 
-    // Clear the map and check the size again
-    map.clear();
-    cout << "Size of map after clear(): " << map.size() << endl;
+	// Display all the words associated with a given letter
+    char letter;
+    cout << "Enter a letter to see words for it: ";
+    cin >> letter;
+    letter = tolower(letter);
+
+	// Here I check if the letter is in the map and print the words associated with it
+    if (map.containsKey(letter)) {
+        cout << "Words starting with: '" << letter << "': ";
+        map[letter].printInOrder(); 
+    }
+    else {
+        cout << "There are no words starting with: '" << letter << "'" << endl;
+    }
 
     return 0;
 }

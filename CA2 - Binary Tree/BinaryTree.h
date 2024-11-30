@@ -17,8 +17,8 @@ public:
 	int count();
 	T& get(T& item);
 
-	void printInOrder();
-	void printInOrder(BSTNode<T> *node);
+	void printInOrder() const;
+	void printInOrder(BSTNode<T> *node) const;
 	void printPreOrder();
 	void printPreOrder(BSTNode<T> *node);
 	void printPostOrder();
@@ -205,13 +205,13 @@ BinaryTree<T>::~BinaryTree()
 }
 
 template<class T>
-void BinaryTree<T>::printInOrder()
+void BinaryTree<T>::printInOrder() const
 {
 	this->printInOrder(root);
 	cout << endl;
 }
 template<class T>
-void BinaryTree<T>::printInOrder(BSTNode<T> *node)
+void BinaryTree<T>::printInOrder(BSTNode<T> *node) const
 {
 	if (node != nullptr)
 	{

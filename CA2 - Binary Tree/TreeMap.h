@@ -40,8 +40,6 @@ public:
     int size();
     bool removeKey(K key);
     V& operator[](K key);
-	void printMap();
-	void printMapHelper(BSTNode<MapValues<K, V>>* node);
 };
 
 
