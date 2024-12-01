@@ -53,42 +53,79 @@ vector<Weapon> readCSV(const string& filename)
     return weapons;
 }
 
-// This method creates an index based on the type defined by user input - I will change this to create a TreeMap instead
-void index(const vector<Weapon>& weapons, const string& header) 
-{
-    map<string, int> index;
-
-	// Here it iterates through the weapons array and creates an index based on the type chosen by user
+// This method creates an index based on the header provided by the user 
+void indexMap(TreeMap<string, vector<Weapon>>& index, const vector<Weapon>& weapons, const string& header) {
+    
+	// Iterating through the weapons array to create the index for the header 
     for (const auto& weapon : weapons) 
     {
-        if (header == "name") {
-            index[weapon.name]++;
+        string key;
+
+        if (header == "name")
+        {
+            key = weapon.name;
         }
         else if (header == "type")
         {
-            index[weapon.type]++;
+            key = weapon.type;
         }
         else if (header == "rarity")
         {
-            index[weapon.rarity]++;
+            key = weapon.rarity;
         }
-        else if (header == "damage") {
-            index[to_string(weapon.damage)]++;
+        else if (header == "damage")
+        {
+            key = to_string(weapon.damage);
         }
-        else if (header == "cost") {
-            index[to_string(weapon.cost)]++;
+        else if (header == "cost")
+        {
+            key = to_string(weapon.cost);
         }
-        else {
+        else 
+        {
             cout << "Invalid header: " << header << endl;
             return;
         }
 
+		// If the key is not in the map, it adds it
+        if (!index.containsKey(key)) 
+        {
+            index.put(key, vector<Weapon>());
+        }
+
+        index[key].push_back(weapon); 
     }
 
-	// This displays the index by iterating through the map - again, this is only for testing now, will change it to display the TreeMap
-    cout << "Index of header - " << header << endl;
-    for (const auto& pair : index) 
+	// Here it displays the keys in the map using keyset method from TreeMap
+    BinaryTree<string> keys = index.keySet();
+    keys.printInOrder(); 
+    cout << endl;
+
+	// Displays the number for each key in the map
+    for (int i = 0; i < keys.count(); ++i) 
     {
-        cout << pair.first << ": " << pair.second << endl;
+        string key = keys.toArray()[i];
+        cout << "Key: " << key << ", Count: " << index[key].size() << endl;
+    }
+}
+
+// This method displays the subset of data based on the key provided by the user
+void viewSubset(TreeMap<string, vector<Weapon>>& index, const string& key) {
+
+	// If the key is in the map, it displays the data for that key
+    if (index.containsKey(key)) 
+    {
+		const auto& items = index[key]; // Gets the vector of weapons for the key
+        for (const auto& item : items) 
+        {
+            cout << "Name: " << item.name << ", Type: " << item.type
+                << ", Damage: " << item.damage << ", Cost: " << item.cost
+                << ", Rarity: " << item.rarity << endl;
+        }
+    }
+
+    else 
+    {
+        cout << "No information found for key: " << key << endl;
     }
 }

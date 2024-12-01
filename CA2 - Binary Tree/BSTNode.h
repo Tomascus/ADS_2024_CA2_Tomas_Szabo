@@ -18,7 +18,7 @@ public:
 	BSTNode(T data);
 	void setItem(T item);
 	int count();
-	void add(T& item);
+	void add(const T& item);
 	BSTNode<T>* getParent();
 	BSTNode<T>* getLeft();
 	BSTNode<T>* getRight();
@@ -136,7 +136,7 @@ int BSTNode<T>::count()
 }
 
 template <class T>
-void BSTNode<T>::add(T& item)
+void BSTNode<T>::add(const T& item)
 {
 	if (item == this->data)
 	{

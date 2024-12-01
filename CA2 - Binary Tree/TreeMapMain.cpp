@@ -38,22 +38,44 @@ void readFile(const string& filename, TreeMap<char, BinaryTree<string>>& map) {
 int main() {
     
     string filename = "weapons.csv"; 
-	vector<Weapon> weapons = readCSV(filename); // call the method that reads the file
+	vector<Weapon> weapons = readCSV(filename); // Stores the data from the file into a vector of weapons
 
 
-	// Displays the data read from the file by irerating through the array of weapons
+	/*// Displays the data read from the file by irerating through the array of weapons - can be disabled
     for (const auto& weapon : weapons) {
         cout << "Name: " << weapon.name << ", Type: " << weapon.type <<
             ", Damage: " << weapon.damage << ", Cost: " << weapon.cost
             << ", Rarity: " << weapon.rarity << endl;
-    }
+    }*/
 
-    
-    // Creates an index based on the header chosen by user
-    cout << "Enter header to index (name, type, rarity, damage, cost): ";
+	// Creates TreeMap to store the information for indexing
+    TreeMap<string, vector<Weapon>> index;
+
+    // Create an index based on user input
     string header;
+    cout << "Enter header to index (name, type, rarity, damage, cost): ";
     cin >> header;
-    index(weapons, header);
+
+    indexMap(index, weapons, header);
+
+	// View a subset of the data based on user input
+    string key;
+    cout << "Enter a key to view data subset of (specific name, type, rarity, damage, cost): ";
+    cin >> key;
+
+    viewSubset(index, key);
+
+
+
+    /*// Ask the user for the field and value to filter by
+    string header, value;
+    cout << "Enter the field to filter by (name, type, rarity): ";
+    cin >> header;
+    cout << "Enter the value to search for: ";
+    cin >> value;
+
+    // View the subset of data
+    viewSubset(weapons, header, value);*/
     
     
     /*TreeMap<char, BinaryTree<string>> map;
