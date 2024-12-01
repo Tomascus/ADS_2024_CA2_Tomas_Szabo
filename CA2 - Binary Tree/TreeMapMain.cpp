@@ -38,16 +38,22 @@ void readFile(const string& filename, TreeMap<char, BinaryTree<string>>& map) {
 int main() {
     
     string filename = "weapons.csv"; 
-	vector<Weapon> items = readCSV(filename); // call the method that reads the file
+	vector<Weapon> weapons = readCSV(filename); // call the method that reads the file
 
 
 	// Displays the data read from the file by irerating through the array of weapons
-    for (const auto& item : items) {
-        cout << "Name: " << item.name << ", Type: " << item.type << 
-            ", Damage: " << item.damage << ", Cost: " << item.cost
-            << ", Rarity: " << item.rarity << endl;
+    for (const auto& weapon : weapons) {
+        cout << "Name: " << weapon.name << ", Type: " << weapon.type <<
+            ", Damage: " << weapon.damage << ", Cost: " << weapon.cost
+            << ", Rarity: " << weapon.rarity << endl;
     }
 
+    
+    // Creates an index based on the header chosen by user
+    cout << "Enter header to index (name, type, rarity, damage, cost): ";
+    string header;
+    cin >> header;
+    index(weapons, header);
     
     
     /*TreeMap<char, BinaryTree<string>> map;

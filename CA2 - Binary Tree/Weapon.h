@@ -2,7 +2,6 @@
 #include <fstream> 
 #include <sstream> // for stringstream
 #include <vector>
-#include <string>
 
 using namespace std;
 
@@ -52,4 +51,44 @@ vector<Weapon> readCSV(const string& filename)
 
     file.close(); 
     return weapons;
+}
+
+// This method creates an index based on the type defined by user input - I will change this to create a TreeMap instead
+void index(const vector<Weapon>& weapons, const string& header) 
+{
+    map<string, int> index;
+
+	// Here it iterates through the weapons array and creates an index based on the type chosen by user
+    for (const auto& weapon : weapons) 
+    {
+        if (header == "name") {
+            index[weapon.name]++;
+        }
+        else if (header == "type")
+        {
+            index[weapon.type]++;
+        }
+        else if (header == "rarity")
+        {
+            index[weapon.rarity]++;
+        }
+        else if (header == "damage") {
+            index[to_string(weapon.damage)]++;
+        }
+        else if (header == "cost") {
+            index[to_string(weapon.cost)]++;
+        }
+        else {
+            cout << "Invalid header: " << header << endl;
+            return;
+        }
+
+    }
+
+	// This displays the index by iterating through the map - again, this is only for testing now, will change it to display the TreeMap
+    cout << "Index of header - " << header << endl;
+    for (const auto& pair : index) 
+    {
+        cout << pair.first << ": " << pair.second << endl;
+    }
 }
