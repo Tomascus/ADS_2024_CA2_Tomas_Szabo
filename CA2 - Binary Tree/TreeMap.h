@@ -5,7 +5,7 @@
 
 using namespace std;
 
-// For now, the tests and treemap contains car names and first letters as key,value for the map - will change for part 2 maybe, also changing it to read from file
+// The tests and treemap contains car names and first letters as key,value for the map 
 
 template <class K, class V>
 class TreeMap {

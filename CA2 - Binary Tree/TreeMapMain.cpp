@@ -5,50 +5,88 @@
 
 using namespace std;
 
-// This method reads the file and and inserts the words into the map - For now Im creating the map by storing character and a binary tree of strings (CHANGE ?)
-void readFile(const string& filename, TreeMap<char, BinaryTree<string>>& map) {
-    ifstream file(filename);
-    if (!file) {
-        cout << "Error opening the file called: " << filename << endl;
-        return;
-    }
 
-	// Reads the file word by word
-    string word;
-    while (file >> word) {
-        
-		// Here I convert each word to lowercase to make it easier to compare
-        for (char& c : word) {
-            c = tolower(c);
+void runApp1();
+void runApp2();
+
+// Main menu to run the applications 
+int main() {
+    int choice = 0;
+
+    do {
+        cout << "\n --- Main Menu --- \n";
+        cout << "1. App 1: Text file reading and organizing words by their first letter \n";
+        cout << "2. App 2: View and search CSV file data \n";
+        cout << "0. Exit \n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1:
+            runApp1();
+            break;
+        case 2:
+            runApp2();
+            break;
+        case 0:
+            cout << "Exiting the program \n";
+            break;
+        default:
+            cout << "Invalid choice... Please enter 1, 2 or 0 to exit \n";
+            break;
         }
+    } while (choice != 0);
 
-		// Get the first letter to store as the key
-        char firstLetter = word[0];
-
-		// Inserts the word into the map if the key is not there yet
-        if (!map.containsKey(firstLetter)) {
-            map.put(firstLetter, BinaryTree<string>());
-        }
-        map[firstLetter].add(word); // Using BinaryTree's add method to insert word
-    }
-
-    file.close();
+    return 0;
 }
 
-int main() {
-    
-    string filename = "weapons.csv"; 
-	vector<Weapon> weapons = readCSV(filename); // Stores the data from the file into a vector of weapons
+void runApp1() 
+{
+    cout << "\n --- Text file reading and organizing words by their first letter --- \n";
 
+    TreeMap<char, BinaryTree<string>> map;
+    string filename = "words.txt";
+    readFile(filename, map);
 
-	/*// Displays the data read from the file by irerating through the array of weapons - can be disabled
+    // Display the list of letters in the file
+    cout << "Letters in the file: ";
+    BinaryTree<char> keys = map.keySet();
+    keys.printInOrder();
+
+    // Display all the words associated with a given letter
+    char letter;
+    cout << "\n Enter a letter to see words for it: ";
+    cin >> letter;
+    letter = tolower(letter);
+
+    // Here I check if the letter is in the map and print the words associated with it
+    if (map.containsKey(letter)) 
+    {
+        cout << "Words starting with: '" << letter << "': ";
+        map[letter].printInOrder();
+    }
+    else 
+    {
+        cout << "There are no words starting with: '" << letter << "' \n";
+    }
+}
+
+// Application 2: View and search CSV data
+void runApp2() 
+{
+    cout << "\n --- Application 2: View and Search CSV file data --- \n";
+
+    string filename = "weapons.csv";
+    vector<Weapon> weapons = readCSV(filename); // Read data into a vector of Weapon objects
+
+    /*// Displays the data read from the file by irerating through the array of weapons - can be disabled
     for (const auto& weapon : weapons) {
         cout << "Name: " << weapon.name << ", Type: " << weapon.type <<
             ", Damage: " << weapon.damage << ", Cost: " << weapon.cost
             << ", Rarity: " << weapon.rarity << endl;
     }*/
 
-	// Creates TreeMap to store the information for indexing
+    // Creates TreeMap to store the information for indexing
     TreeMap<string, vector<Weapon>> index;
 
     // Create an index based on user input
@@ -58,51 +96,11 @@ int main() {
 
     indexMap(index, weapons, header);
 
-	// View a subset of the data based on user input
+    // View a subset of the data based on user input
     string key;
     cout << "Enter a key to view data subset of (specific name, type, rarity, damage, cost): ";
     cin >> key;
 
+    // Display the subset of data
     viewSubset(index, key);
-
-
-
-    /*// Ask the user for the field and value to filter by
-    string header, value;
-    cout << "Enter the field to filter by (name, type, rarity): ";
-    cin >> header;
-    cout << "Enter the value to search for: ";
-    cin >> value;
-
-    // View the subset of data
-    viewSubset(weapons, header, value);*/
-    
-    
-    /*TreeMap<char, BinaryTree<string>> map;
-    string filename = "words.txt";
-
-    readFile(filename, map);
-
-	// Display the list of letters in the file
-    cout << "Letters in the file: ";
-    BinaryTree<char> keys = map.keySet();
-    keys.printInOrder();
-
-	// Display all the words associated with a given letter
-    char letter;
-    cout << "Enter a letter to see words for it: ";
-    cin >> letter;
-    letter = tolower(letter);
-
-	// Here I check if the letter is in the map and print the words associated with it
-    if (map.containsKey(letter)) {
-        cout << "Words starting with: '" << letter << "': ";
-        map[letter].printInOrder(); 
-    }
-    else {
-        cout << "There are no words starting with: '" << letter << "'" << endl;
-    }
-    */
-
-    return 0;
 }

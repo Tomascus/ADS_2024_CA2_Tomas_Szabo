@@ -14,7 +14,38 @@ struct Weapon {
     string rarity;
 };
 
-// This method reads the csv file and returns a vector of weapons - I will change this to return a TreeMap 
+// This method reads the file and and inserts the words into the map 
+void readFile(const string& filename, TreeMap<char, BinaryTree<string>>& map) {
+    ifstream file(filename);
+    if (!file) {
+        cout << "Error opening the file called: " << filename << endl;
+        return;
+    }
+
+    // Reads the file word by word
+    string word;
+    while (file >> word) {
+
+        // Here I convert each word to lowercase to make it easier to compare
+        for (char& c : word) {
+            c = tolower(c);
+        }
+
+        // Get the first letter to store as the key
+        char firstLetter = word[0];
+
+        // Inserts the word into the map if the key is not there yet
+        if (!map.containsKey(firstLetter)) {
+            map.put(firstLetter, BinaryTree<string>());
+        }
+        map[firstLetter].add(word); // Using BinaryTree's add method to insert word
+    }
+
+    file.close();
+}
+
+
+// This method reads the csv file and returns a vector of weapons 
 vector<Weapon> readCSV(const string& filename)
 {
     ifstream file(filename);

@@ -9,7 +9,7 @@ namespace TreeMapTests
 	{
 	public:
 
-		// For now, the tests and treemap contains car names and first letters as key,value for the map - will change for part 2 maybe, also changing it to read from file
+		// For now, the tests and treemap contains car names and first letters as key,value for the map 
 		// This test checks if the TreeMap is empty after clearing it 
 		TEST_METHOD(TestClear)
 		{
@@ -47,7 +47,7 @@ namespace TreeMapTests
 			Assert::AreEqual(string("Audi"), map.get('A'));
 			Assert::AreEqual(string("Bentley"), map.get('B'));
 
-			// If the key does not exist, it returns a default value (empty string) - Change ?
+			// If the key does not exist, it returns a default value (empty string) 
 			Assert::AreEqual(string(""), map.get('C'));
 		}
 
@@ -55,6 +55,7 @@ namespace TreeMapTests
 		TEST_METHOD(TestKeySet)
 		{
 			TreeMap<char, string> map;
+
 			map.put('A', "Audi");
 			map.put('B', "Bentley");
 			map.put('C', "Chevrolet");
@@ -136,8 +137,18 @@ namespace TreeMapTests
 			Assert::AreEqual(string("Audi"), map['A']); // Checks if the value is correct
 			Assert::AreEqual(string("Bentley"), map['B']);
 
-			// If the key doesnt exist, it returns a default value (empty string) - Change ?
+			// If the key doesnt exist, it returns a default value (empty string) 
 			Assert::AreEqual(string(""), map['C']);
+		}
+
+		// This test checks how it handles duplicate keys, it should update the value of the key
+		TEST_METHOD(TestDuplicateKeys) {
+			TreeMap<char, string> map;
+			map.put('B', "BMW");
+			map.put('B', "Bentley");
+
+			Assert::AreEqual(1, map.size()); 
+			Assert::AreEqual(string("Bentley"), map.get('B')); 
 		}
 
 	};
